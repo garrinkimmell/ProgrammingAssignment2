@@ -3,9 +3,10 @@
 
 ## makeCacheMatrix creates a matrix wrapper that memoizes its inverse. 
 ## The underlying matrix should be accessed by the `get` operation, and 
-## the inverse should be accessed using the `solve` operation. There is no
+## the inverse should be accessed using the `inverse` operation. There is no
 ## `set` operation, because that's just silly. To `set`, just create a new 
 ## matrix wrapper using `makeCacheMatrix`.
+## Note that the result of `inverse` is another memoized matrix, not an R matrix.
 makeCacheMatrix <- function(x = matrix()) {
   e <- new.env()
   e$get <- function() x
@@ -26,13 +27,13 @@ makeCacheMatrix <- function(x = matrix()) {
 
 
 ## cacheSolve returns the inverse of a matrix created with the `makeCachMatrix` 
-## wrapper. Seems unnecessary, because it just wraps the `solve` function in `x`.
+## wrapper. Seems unnecessary, because it just wraps the `inverse` function in `x`.
 cacheSolve <- function(x, ...) {
    x$inverse()
 }
 
 
-## Tests cases
+## Test cases
 test <- function () {
   m <- matrix(1.1:9.1, nrow=3,ncol=3)
   m[1,1] <- 1.0
